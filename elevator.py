@@ -84,9 +84,11 @@ class Elevator(object):
         # - "first" request get priority.
         if self._requests[0] > self._floor:
             self._move = GO_UP
+            self._last_move = GOING_UP
             return
         else:
             self._move = GO_DOWN
+            self._last_move = GOING_DOWN
             return
 
 
@@ -110,14 +112,22 @@ class Elevator(object):
 
     def pretty_move(self):
         if self._move > 0:
-            return '/\\/\\'
+            return '^^^'
         elif self._move < 0:
-            return '\\/\\/'
+            return 'vvv'
         else:
             return 'stop'
 
+    def pretty_last_move(self):
+        if self._last_move > 0:
+            return '(^)'
+        elif self._last_move < 0:
+            return '(v)'
+        else:
+            return '()'
+
     def __str__(self):
-        return "{} Elevator<fl {} {} reqs {}>".format( self._timer, self._floor, self.pretty_move(), self._requests) 
+        return "{} Elevator<fl {} {} {} reqs {}>".format( self._timer, self._floor, self.pretty_move(), self.pretty_last_move(), self._requests) 
                                                               
 def main(lines=sys.stdin):
 
